@@ -2,10 +2,12 @@
 
 TODO:
 - dynamic data
-- introduces reccurent concept
-	- why limit to month ?
 - introduces dates for income and outcome
   - what to do with general amount like "food"
+- introduces reccurent concept
+	- why limit to month ?
+- initialize current solde by asking the user how much he have now on his account
+
 */
 'use strict';
 

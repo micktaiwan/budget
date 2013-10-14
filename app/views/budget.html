@@ -5,24 +5,24 @@
     <tr style="vertical-align: top">
       <td>
       <table class="table table-striped">
-        <tr ng-repeat="income in incomes"><td>{{income.label}}</td><td class="amount">{{income.amount}}</td></tr>
+        <tr ng-repeat="income in incomes"><td>{{income.label}}</td><td class="amount income">{{income.amount}}</td></tr>
       </table>
       </td>
       <td>
       <table class="table table-striped">
-        <tr ng-repeat="outcome in outcomes"><td class="amount">{{outcome.amount}}</td><td >{{outcome.label}}</td></tr>
+        <tr ng-repeat="outcome in outcomes"><td class="amount outcome">{{outcome.amount}}</td><td >{{outcome.label}}</td></tr>
       </table>
       </td>
     </tr>
     <tr>
     <td>
       <table class="table table-striped">
-        <tr><td>Total</td><td class="amount">{{incomeTotal}}</td></tr>
+        <tr><td>Total</td><td class="amount income total">{{incomeTotal}}</td></tr>
       </table>
     </td>
     <td>
       <table class="table table-striped">
-        <tr><td class="amount">{{outcomeTotal}}</td><td>Total</td></tr>
+        <tr><td class="amount outcome total">{{outcomeTotal}}</td><td>Total</td></tr>
       </table>
     </td>
     </tr>

@@ -6,5 +6,16 @@ body {
 
 .amount {
   text-align: right;
+}
+.amount.outcome {
   color: red;
+}
+.amount.income {
+  color: green;
+}
+.amount.income.total {
+  font-weight: bold;
+}
+.amount.outcome.total {
+  font-weight: bold;
 }
