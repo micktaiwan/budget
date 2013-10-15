@@ -2,28 +2,19 @@
 
 TODO:
 - dynamic data
-- introduces dates for income and outcome
-  - what to do with general amount like "food"
-- introduces reccurent concept
-	- why limit to month ?
-- initialize current solde by asking the user how much he have now on his account
+- initialize current balance by asking the user how much he have now on his account
+- timeline
+- one time in/outcome with date ( to be able to remember checks in the future)
+- unit tests !
 
 */
 'use strict';
 
 angular.module('budgetApp')
-  .controller('BudgetCtrl', function ($scope) {
-    $scope.incomes = [
-    { label: 'Salaire', amount: 1000},
-    { label: 'Location', amount: 100}
-    ];
-    $scope.outcomes = [
-    { label: 'Bouffe', amount: 100},
-    { label: 'Enfants', amount: 200},
-    { label: 'Appart', amount: 300}
-    ];
+  .controller('BudgetCtrl', function ($scope, Db) {
+    $scope.lines = Db.getLines();
 
-    $scope.incomeTotal  = $scope.incomes.reduce  (function(a,b) {return a+b.amount;}, 0);
-    $scope.outcomeTotal = $scope.outcomes.reduce (function(a,b) {return a+b.amount;}, 0);
+    $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i'}).reduce(function(a,b) {return a+b.amount;}, 0);
+    $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o'}).reduce(function(a,b) {return a+b.amount;}, 0);
 
   });

@@ -1,30 +1,84 @@
 <h1>Budget</h1>
+<form class="form-horizontal" role="form">
+
+  <div class="form-group">
+    <label class="col-lg-2 control-label sr-only" for="label">Label</label>
+    <div class="col-lg-10">
+      <input type="text" class="form-control" id="label" placeholder="Enter label">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-2 control-label sr-only" for="amount">Amount</label>
+    <div class="col-lg-10">
+      <input type="text" class="form-control" id="amount" placeholder="Amount">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-2 control-label sr-only" for="type">Type</label>
+    <div class="col-lg-10">
+      <select class="form-control" id="type">
+        <option>One time</option>
+        <option>Reccurent</option>
+        <option>Category</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="col-lg-2 control-label sr-only" for="datepicker">Date</label>
+    <div class="input-append date" data-date-format="dd-MMM-yy">
+      <input class="span2" id="datepicker" size="16" type="text" placeholder="Date"/>
+      <span class="add-on"><i class="icon-calendar"></i></span>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-lg-offset-2">
+      <button type="submit" class="btn btn-primary">Add</button>
+    </div>
+  </div>
+</form>
+
 <div class="table-responsive">
   <table>
     <thead><th>Income</th><th>Outcome</th></thead>
     <tr style="vertical-align: top">
       <td>
       <table class="table table-striped">
-        <tr ng-repeat="income in incomes"><td>{{income.label}}</td><td class="amount income">{{income.amount}}</td></tr>
+        <tr ng-repeat="item in lines | filter:{type:'I'}"><td>{{item.date | date:'dd-MMM-yy'}}</td><td>{{item.label}}</td><td class="amount income">{{item.amount}}</td></tr>
       </table>
       </td>
       <td>
       <table class="table table-striped">
-        <tr ng-repeat="outcome in outcomes"><td class="amount outcome">{{outcome.amount}}</td><td >{{outcome.label}}</td></tr>
+        <tr ng-repeat="item in lines | filter:{type:'O'}"><td class="amount outcome">{{item.amount}}</td><td>{{item.label}}</td><td>{{item.date | date:'dd-MMM-yy'}}</td></tr>
       </table>
       </td>
     </tr>
     <tr>
     <td>
       <table class="table table-striped">
-        <tr><td>Total</td><td class="amount income total">{{incomeTotal}}</td></tr>
+        <tr><td>&nbsp;</td><td>Total</td><td class="amount income total">{{incomeTotal}}</td></tr>
       </table>
     </td>
     <td>
       <table class="table table-striped">
-        <tr><td class="amount outcome total">{{outcomeTotal}}</td><td>Total</td></tr>
+        <tr><td class="amount outcome total">{{outcomeTotal}}</td><td>Total</td><td>&nbsp;</td></tr>
       </table>
     </td>
     </tr>
   </table>
 </div>
+<h1>Timeline</h1>
+<div class="table-responsive">
+  <table class="table table-striped">
+    <thead><th>Date</th><th>Label</th><th>Amount</th></thead>
+    <tr ng-repeat="item in lines | orderBy:date">
+    <td>{{item.date | date:'dd-MMM-yy'}}</td>
+    <td>{{item.label}}</td>
+    <td class="amount income">{{item.amount}}</td>
+    </tr>
+  </table>
+</div>
+
+<script>$('#datepicker').datepicker();</script>
