@@ -30,35 +30,13 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
 
     addItem : function(label, amount, type, date){
       console.log('Db.addItem')
-      ref.push({type: type, label: label, amount: amount, date: date});
-    },
-
-    getLines: function() {
-      return [
-      { type: 'I', label: 'Salaire', amount: 1000, date: '2013-10-03'},
-      { type: 'I', label: 'Location', amount: 100, date: '2013-10-05'},
-      { type: 'Oc', label: 'Bouffe', amount: 100},
-      { type: 'Oc', label: 'Enfants', amount: 200, date: '2013-10-05'},
-      { type: 'O', label: 'Appart', amount: 300, date: '2013-10-25'},
-      { type: 'O', label: 'Dentiste', amount: 300, date: '2013-10-25', check: '200934'}
-      ];
+      ref.push({type: type, label: label, amount: parseInt(amount), date: date});
     },
 
     remove : function(id){
         ref.child(id).remove();
     }
 
-/*    setDone : function(id, done){
-      ref.child(id).update({
-          done : done
-      });
-    },
-
-    setText : function(id, text){
-      ref.child(id).update({
-          text : text
-      });
-    }*/
   };
 
 });

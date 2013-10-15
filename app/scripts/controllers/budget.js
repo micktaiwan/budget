@@ -1,14 +1,18 @@
 /*
 
 TODO:
-- it seems that we are not logged after reload
-- dynamic data
+- algorythm
+    need to have a period object (default to the month) and a start date (begining of the period)
+    analyse current day date and determine first period
+    then add all amounts for the next period taking into account their type
+      caution the date is virtual if the type is reccurent or budget
+    store the result in a temp variable 'balance' associated to the period and inject it to the next period
+- delete a item
 - form validation
-- color the amounts in the timeline
-- correct datepicker
 - initialize current balance by asking the user how much he have now on his account
 - timeline
-- one time in/outcome with date ( to be able to remember checks in the future)
+- correct datepicker
+- one time in/outcome with date (to be able to remember checks in the future)
 - unit tests !
 
 */
@@ -18,7 +22,8 @@ angular.module('budgetApp')
   .controller('BudgetCtrl', function ($scope, $location, Db, Google) {
 
     if(Google.getUser() == null) {
-        $location.path('/');
+      $location.path('/');
+      return;
     }
 
     $scope.user = Google.getUser();
@@ -33,10 +38,16 @@ angular.module('budgetApp')
 
     //$scope.lines = Db.getLines();
 
-
     $scope.addItem = function() {
-    	//$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
-    	Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
-    	};;
+      Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
+/*      if(String(add_form.elements.type.value) != "undefined") {
+      Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
+    }
+    else
+    {
+      alert('not valid');
+    }*/
+  	//$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
+  	};;
 
   });

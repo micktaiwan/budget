@@ -3,6 +3,7 @@
 angular.module('budgetApp', [
         'budgetApp.services.db',
         'budgetApp.filters.dateDelta',
+        'budgetApp.filters.typeClass',
         'google'
   ])
   .config(function ($routeProvider) {
