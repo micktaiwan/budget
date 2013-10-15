@@ -1,15 +1,18 @@
 /*
 
 TODO:
-- algorythm
+- algorithm
     need to have a period object (default to the month) and a start date (begining of the period)
     analyse current day date and determine first period
     then add all amounts for the next period taking into account their type
       caution the date is virtual if the type is reccurent or budget
-    store the result in a temp variable 'balance' associated to the period and inject it to the next period
-- delete a item
-- form validation
+    store the result in a 'balance' item associated to the period and inject it to the next period
 - initialize current balance by asking the user how much he have now on his account
+    or simply edit the balance item
+- delete a item
+- css to differentiate item types (another filter)
+- deploy on github pages ! :)
+- form validation
 - timeline
 - correct datepicker
 - one time in/outcome with date (to be able to remember checks in the future)
