@@ -15,14 +15,27 @@ TODO:
 'use strict';
 
 angular.module('budgetApp')
-  .controller('BudgetCtrl', function ($scope, Db) {
-    $scope.lines = Db.getLines();
+  .controller('BudgetCtrl', function ($scope, $location, Db, Google) {
 
-    $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i'}).reduce(function(a,b) {return a+b.amount;}, 0);
-    $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o'}).reduce(function(a,b) {return a+b.amount;}, 0);
+    if(Google.getUser() == null) {
+        $location.path('/');
+    }
+
+    $scope.user = Google.getUser();
+    $scope.lines = [];
+
+    Db.onValues(function(values) {
+      console.log(values);
+      $scope.lines = $.map(values,function(v,k){return v;});;
+      $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
+      $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
+    });
+
+    //$scope.lines = Db.getLines();
+
 
     $scope.addItem = function() {
-    	$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
+    	//$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
     	Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
     	};;
 

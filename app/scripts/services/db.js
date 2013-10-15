@@ -1,31 +1,36 @@
-angular.module('budgetApp.services.db', []).factory('Db', function($rootScope) {
+angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $location) {
 
   var ref;
   var firstConnection = true;
 
   return {
 
-    initAccount : function(user_id){
-        ref = new Firebase('https://mick-budget.firebaseio.com/'+user_id);
+    initAccount : function(user_id) {
+      console.log("user_id: "+user_id);
+      ref = new Firebase('https://mick-budget.firebaseio.com/'+user_id);
+      console.log("ref: "+ref);
     },
 
-    onValues : function(callbackSuccess){
-        ref.on('value', function(snapshot) {
-            if(snapshot.val() !== null) {
-                if(firstConnection){
-                    $rootScope.$apply(function(){
-                        callbackSuccess(snapshot.val());
-                    });
-                }else{
+    onValues : function(callbackSuccess) {
+      console.log('onValues')
+      if (typeof ref == 'undefined') { console.log('no ref while getting values'); $location.path('/'); return;}
+      ref.on('value', function(snapshot) {
+        if(snapshot.val() !== null) {
+            if(firstConnection){
+                $rootScope.$apply(function(){
                     callbackSuccess(snapshot.val());
-                }
+                });
+            } else {
+                callbackSuccess(snapshot.val());
             }
-            firstConnection = false;
-        });
+        }
+        firstConnection = false;
+      });
     },
 
     addItem : function(label, amount, type, date){
-        ref.push({type: type, label: label, amount: amount, date: date});
+      console.log('Db.addItem')
+      ref.push({type: type, label: label, amount: amount, date: date});
     },
 
     getLines: function() {
