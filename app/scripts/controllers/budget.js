@@ -1,6 +1,7 @@
 /*
 
 TODO:
+- it seems that we are not logged after reload
 - dynamic data
 - form validation
 - color the amounts in the timeline
@@ -22,6 +23,7 @@ angular.module('budgetApp')
 
     $scope.addItem = function() {
     	$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
-    	};
+    	Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
+    	};;
 
   });
