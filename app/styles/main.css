@@ -10,8 +10,14 @@ body {
 .amount.outcome {
   color: red;
 }
+.amount.outcome.option {
+  background: #FCC;
+}
 .amount.income {
   color: green;
+}
+.amount.income.option {
+  background: #CFC;
 }
 .amount.income.total {
   font-weight: bold;
