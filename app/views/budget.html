@@ -2,47 +2,46 @@
 <!--for {{user.name.givenName}}-->
 <ng-include src="'views/new_item_form.html'"></ng-include>
 
-<div class="table-responsive">
-  <table>
-    <thead><th>Income</th><th>Outcome</th></thead>
-    <tr style="vertical-align: top">
+<div class="row">
+  <div class="span6">
+    <h2>Income/outcome</h2>
+    <table>
+      <thead><th>Income</th><th>Outcome</th></thead>
+      <tr style="vertical-align: top">
+        <td>
+          <table class="table table-striped">
+            <tr ng-repeat="item in lines | filter:{type:'I'} | orderBy:'date'"><td>{{item.date | date:'dd-MMM-yy'}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td class="amount income">{{item.amount}}</td></tr>
+          </table>
+        </td>
+        <td>
+          <table class="table table-striped">
+            <tr ng-repeat="item in lines | filter:{type:'O'} | orderBy:'date'"><td class="amount outcome">{{item.amount}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td>{{item.date | date:'dd-MMM-yy'}}</td></tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
       <td>
         <table class="table table-striped">
-          <tr ng-repeat="item in lines | filter:{type:'I'} | orderBy:date"><td>{{item.date | date:'dd-MMM-yy'}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td class="amount income">{{item.amount}}</td></tr>
+          <tr><td>&nbsp;</td><td>Total</td><td class="amount income total">{{incomeTotal}}</td></tr>
         </table>
       </td>
       <td>
         <table class="table table-striped">
-          <tr ng-repeat="item in lines | filter:{type:'O'} | orderBy:date"><td class="amount outcome">{{item.amount}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td>{{item.date | date:'dd-MMM-yy'}}</td></tr>
+          <tr><td class="amount outcome total">{{outcomeTotal}}</td><td>Total</td><td>&nbsp;</td></tr>
         </table>
       </td>
-    </tr>
-    <tr>
-    <td>
-      <table class="table table-striped">
-        <tr><td>&nbsp;</td><td>Total</td><td class="amount income total">{{incomeTotal}}</td></tr>
-      </table>
-    </td>
-    <td>
-      <table class="table table-striped">
-        <tr><td class="amount outcome total">{{outcomeTotal}}</td><td>Total</td><td>&nbsp;</td></tr>
-      </table>
-    </td>
-    </tr>
-  </table>
+      </tr>
+    </table>
+  </div>
+  <div class="span6">
+  <h2>Timeline</h2>
+    <table class="table table-striped">
+      <thead><th>Date</th><th>Label</th><th>Amount</th></thead>
+      <tr ng-repeat="item in lines | orderBy:'date'">
+        <td>{{item.date | date:'dd-MMM-yy'}} ({{item.date | dateDelta}})</td>
+        <td><ng-include src="'views/_label.html'"></ng-include></td>
+        <td class="{{item.type | typeClass}}">{{item.amount}}</td>
+      </tr>
+    </table>
+  </div>
 </div>
-<h1>Timeline</h1>
-<div class="table-responsive">
-  <table class="table table-striped">
-    <thead><th>Date</th><th>Label</th><th>Amount</th></thead>
-    <tr ng-repeat="item in lines | orderBy:date">
-      <td>{{item.date | date:'dd-MMM-yy'}} ({{item.date | dateDelta}})</td>
-      <td><ng-include src="'views/_label.html'"></ng-include></td>
-      <td class="{{item.type | typeClass}}">{{item.amount}}</td>
-    </tr>
-  </table>
-</div>
-
-<script>
-//$('#datepicker').datepicker({dateFormat:'dd-mm-yy'});
-</script>

@@ -6,7 +6,7 @@ angular.module('budgetApp.filters.dateDelta', []).filter('dateDelta', ['$rootSco
         var DAY = HOUR*24;
         var MONTH = DAY * 30;
         var YEAR = DAY * 365;
-        var delta = (new Date()).getTime() - parseInt(date);
+        var delta = Math.abs((new Date()).getTime() - parseInt(date));
         if(delta > YEAR){
             dateStr = Math.floor(new Date(delta) / YEAR) + " y";
         }else if(delta > MONTH){

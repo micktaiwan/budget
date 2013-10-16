@@ -1,42 +1,43 @@
-<form name="add_form" ng-submit="addItem()" class="form-horizontal" role="form">
+<h2>Add a new item</h2>
+
+<form name="add_form" ng-submit="addItem(label, amount, type, date)" class="form-inline" role="form">
 
   <div class="form-group">
-    <label class="col-lg-2 control-label sr-only" for="label">Label</label>
-    <div class="col-lg-10">
-      <input ng-model="label" type="text" class="form-control" id="label" placeholder="Enter label" required>
+    <label class="control-label sr-only" for="label">Label</label>
+    <input ng-model="label" type="text" class="form-control" id="label" placeholder="Enter label" required>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label sr-only" for="amount">Amount</label>
+    <input ng-model="amount" type="number" class="form-control" id="amount" placeholder="Amount" required>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label sr-only" for="type">Type</label>
+    <select ng-model="type" class="form-control" id="type" placeholder="Type" required>
+      <option value="o" class="amount outcome option" selected>Outcome: One time</option>
+      <option value="O" class="amount outcome option">Outcome: Reccurent</option>
+      <option value="OC" class="amount outcome option">Outcome: Budget</option>
+      <option value="i" class="amount income option">Income: One time</option>
+      <option value="I" class="amount income option">Income: Reccurent</option>
+      <option value="IC" class="amount income option">Income: Budget</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label sr-only" for="date">Date</label>
+    <div class="form-control" >
+      <input ng-model="date" id="date" type="text" placeholder="Date" required/>
+     <!--  ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d|[2-9]\d{3})$/" -->
+      <span class="add-on"><i class="glyphicon glyphicon-calendar"></i></span>
     </div>
   </div>
 
   <div class="form-group">
-    <label class="col-lg-2 control-label sr-only" for="amount">Amount</label>
-    <div class="col-lg-10">
-      <input ng-model="amount" type="number" class="form-control" id="amount" placeholder="Amount" required>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-2 control-label sr-only" for="type">Type</label>
-    <div class="col-lg-10">
-      <select ng-model="type" class="form-control" id="type" required>
-        <option value="o" class="amount outcome option" selected>Outcome: One time</option>
-        <option value="O" class="amount outcome option">Outcome: Reccurent</option>
-        <option value="OC" class="amount outcome option">Outcome: Budget</option>
-        <option value="i" class="amount income option">Income: One time</option>
-        <option value="I" class="amount income option">Income: Reccurent</option>
-        <option value="IC" class="amount income option">Income: Budget</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="form-group">
-    <label class="col-lg-2 control-label sr-only" for="datepicker">Date</label>
-    <div class="input-append date" data-date-format="dd-mm-yy" ng-pattern="/^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/(199\d|[2-9]\d{3})$/" required>
-      <input  ng-model="date" class="span2" id="datepicker" size="16" type="text" placeholder="Date"/>
-      <span class="add-on"><i class="icon-calendar"></i></span>
-    </div>
-
-    <div class="col-lg-offset-2">
-      <button type="submit" class="btn btn-primary btn-disabled">Add</button>
-    </div>
+    <button type="submit" class="btn btn-primary">Add</button>
   </div>
 </form>
+
+<script>
+//$('#date').datepicker({dateFormat:'dd-mm-yy'});
+</script>

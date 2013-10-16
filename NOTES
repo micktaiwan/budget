@@ -1,0 +1,14 @@
+Firebase data manipulation
+==========================
+
+http://stackoverflow.com/questions/15549299/how-to-migrate-data-settings-from-one-firebase-to-another
+
+All of our data is available through a REST API, so you could easily write a script to do this yourself. You can export the data by setting format=export (this includes all of the priority data in the response):
+
+curl https://myapp.firebaseIO.com/.json?format=export&auth=YOUR_FIREBASE_SECRET
+As for exporting the security rules, you can access them here:
+
+curl https://myapp.firebaseIO.com/.settings/rules/.json?auth=YOUR_FIREBASE_SECRET
+You can then write them back to the new Firebase using PUT.
+
+The various Auth settings can't easily be automatically transferred (such as the Authorized Origins), but they probably shouldn't be as they'll differ between staging and production.

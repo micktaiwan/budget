@@ -1,6 +1,7 @@
 /*
 
 TODO:
+- get rif of labelClass and use ng_class instead
 - algorithm
     need to have a period object (default to the month) and a start date (begining of the period)
     analyse current day date and determine first period
@@ -32,24 +33,13 @@ angular.module('budgetApp')
     $scope.lines = [];
 
     Db.onValues(function(values) {
-      //console.log(values);
-      $scope.lines = $.map(values,function(v,k){return v;});;
+      $scope.lines = $.map(values,function(v,k){return v;});
       $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
       $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
     });
 
-    //$scope.lines = Db.getLines();
-
-    $scope.addItem = function() {
-      Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
-/*      if(String(add_form.elements.type.value) != "undefined") {
-      Db.addItem($scope.label, $scope.amount, $scope.type, $scope.date);
-    }
-    else
-    {
-      alert('not valid');
-    }*/
-  	//$scope.lines.push({label: $scope.label, amount: $scope.amount, type: $scope.type, date: $scope.date});
-  	};;
+    $scope.addItem = function(label, amount, type, date) {
+      Db.addItem(label, amount, type, date);
+  	};
 
   });
