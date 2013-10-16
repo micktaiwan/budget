@@ -1,7 +1,6 @@
 /*
 
 TODO:
-- css to differentiate item types (another filter)
 - algorithm
     need to have a period object (default to the month) and a start date (begining of the period)
     analyse current day date and determine first period
