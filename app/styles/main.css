@@ -25,3 +25,28 @@ body {
 .amount.outcome.total {
   font-weight: bold;
 }
+
+.itemlabel {
+  padding-left: 3px;
+}
+
+.itemlabel.r_outcome {
+  color: #500;
+}
+.itemlabel.c_outcome {
+  border: 1px solid #FA0;
+  background-color: #FCA;
+}
+.itemlabel.o_outcome {
+  color: red;
+}
+.itemlabel.r_income {
+  color: #050;
+}
+.itemlabel.c_income {
+  border: 1px solid #8A8;
+  background-color: #AFA;
+}
+.itemlabel.o_income {
+  color: green;
+}

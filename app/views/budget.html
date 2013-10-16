@@ -49,12 +49,12 @@
     <tr style="vertical-align: top">
       <td>
         <table class="table table-striped">
-          <tr ng-repeat="item in lines | filter:{type:'I'}"><td>{{item.date | date:'dd-MMM-yy'}}</td><td>{{item.label}}</td><td class="amount income">{{item.amount}}</td></tr>
+          <tr ng-repeat="item in lines | filter:{type:'I'}"><td>{{item.date | date:'dd-MMM-yy'}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td class="amount income">{{item.amount}}</td></tr>
         </table>
       </td>
       <td>
         <table class="table table-striped">
-          <tr ng-repeat="item in lines | filter:{type:'O'}"><td class="amount outcome">{{item.amount}}</td><td>{{item.label}}</td><td>{{item.date | date:'dd-MMM-yy'}}</td></tr>
+          <tr ng-repeat="item in lines | filter:{type:'O'}"><td class="amount outcome">{{item.amount}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td>{{item.date | date:'dd-MMM-yy'}}</td></tr>
         </table>
       </td>
     </tr>
@@ -78,7 +78,7 @@
     <thead><th>Date</th><th>Label</th><th>Amount</th></thead>
     <tr ng-repeat="item in lines | orderBy:date">
       <td>{{item.date | date:'dd-MMM-yy'}} ({{item.date | dateDelta}})</td>
-      <td>{{item.label}} ({{item.type}})</td>
+      <td><ng-include src="'views/_label.html'"></ng-include></td>
       <td class="{{item.type | typeClass}}">{{item.amount}}</td>
     </tr>
   </table>

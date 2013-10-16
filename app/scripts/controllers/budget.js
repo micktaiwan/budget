@@ -1,6 +1,7 @@
 /*
 
 TODO:
+- css to differentiate item types (another filter)
 - algorithm
     need to have a period object (default to the month) and a start date (begining of the period)
     analyse current day date and determine first period
@@ -10,7 +11,6 @@ TODO:
 - initialize current balance by asking the user how much he have now on his account
     or simply edit the balance item
 - delete a item
-- css to differentiate item types (another filter)
 - deploy on github pages ! :)
 - form validation
 - timeline
@@ -33,7 +33,7 @@ angular.module('budgetApp')
     $scope.lines = [];
 
     Db.onValues(function(values) {
-      console.log(values);
+      //console.log(values);
       $scope.lines = $.map(values,function(v,k){return v;});;
       $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
       $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
