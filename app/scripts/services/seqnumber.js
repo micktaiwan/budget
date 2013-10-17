@@ -1,4 +1,4 @@
-angular.module('budgetApp.services.seqNumber', []).factory('seqNumber', function($rootScope) {
+angular.module('budgetApp.services.seqNumber', []).factory('SeqNumber', function($rootScope) {
 
   var seq_num = 0;
 

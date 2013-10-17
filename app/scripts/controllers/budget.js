@@ -22,7 +22,7 @@ TODO:
 'use strict';
 
 angular.module('budgetApp')
-  .controller('BudgetCtrl', function ($scope, $location, Db, Google) {
+  .controller('BudgetCtrl', function ($scope, $location, Db, Google, SeqNumber) {
 
     if(Google.getUser() == null) {
       $location.path('/');
@@ -31,6 +31,18 @@ angular.module('budgetApp')
 
     $scope.user = Google.getUser();
     $scope.lines = [];
+    $scope.periods = [];
+    $scope.periods.push(function() {
+        var seq_num = SeqNumber.new();
+        var lines = $scope.lines;
+        balance = function() {
+          // too simple, take care of types
+          self.lines.reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
+        };
+      }
+    );
+    console.log('balance:');
+    console.log($scope.periods[0].balance());
 
     Db.onValues(function(values) {
       $scope.lines = $.map(values,function(v,k){return v;});
