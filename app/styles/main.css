@@ -34,12 +34,12 @@ body {
   color: #500;
 }
 .itemlabel.c_outcome {
-  border: 1px solid #FA0;
-  background-color: #FCA;
+  color: #500;
 }
 .itemlabel.o_outcome {
   color: red;
 }
+
 .itemlabel.r_income {
   color: #050;
 }
