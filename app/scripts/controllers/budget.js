@@ -35,7 +35,7 @@ angular.module('budgetApp')
     $scope.periods.push(function() {
         var seq_num = SeqNumber.new();
         var lines = $scope.lines;
-        balance = function() {
+        this.balance = function() {
           // too simple, take care of types
           self.lines.reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
         };
