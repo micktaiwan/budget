@@ -5,6 +5,7 @@ angular.module('budgetApp', [
         'budgetApp.filters.dateDelta',
         'budgetApp.filters.typeClass',
         'budgetApp.filters.labelClass',
+        'budgetApp.filters.itemDate',
         'budgetApp.services.seqNumber',
         'google'
   ])

@@ -32,8 +32,8 @@ TODO:
           }
         });
 */
-function relativeDate(date) {
-  return new Date(date).getTime();
+function isDateInPeriod(date, period_start_date) {
+  return new Date(date).getTime() >= period_start_date.getTime();
 }
 
 angular.module('budgetApp')
@@ -52,10 +52,8 @@ angular.module('budgetApp')
         var seq_num = SeqNumber.new();
         // the date is virtual and shall be recalculated if the type is reccurent or budget
         lines = lines.filter(function(a) {
-            console.log(relativeDate(a.date));
-            console.log(period_start_date);
-            return relativeDate(a.date) == period_start_date.getTime();
-          });
+          return isDateInPeriod(a.date, period_start_date);
+        });
         console.log("Period lines:");
         console.log(lines);
         this.balance = function() {

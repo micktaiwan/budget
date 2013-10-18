@@ -12,7 +12,6 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
     },
 
     onValues : function(callbackSuccess) {
-      console.log('onValues')
       if (typeof ref == 'undefined') { console.log('no ref while getting values'); $location.path('/'); return;}
       ref.on('value', function(snapshot) {
         if(snapshot.val() !== null) {
