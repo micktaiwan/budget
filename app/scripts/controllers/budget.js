@@ -21,21 +21,6 @@ TODO:
 */
 'use strict';
 
-/*        lines.forEach(function(l) {
-          if(l.type=='I' || l.type=='IC' || l.type=='O' || l.type=='OC') {
-            var d = new Date(l.date);
-            console.log(d);
-            console.log('to');
-            d.setMonth(sdate.getMonth()-1);
-            console.log(d);
-            l.date = d.getTime();
-          }
-        });
-*/
-function isDateInPeriod(date, period_start_date) {
-  return new Date(date).getTime() >= period_start_date.getTime();
-}
-
 angular.module('budgetApp')
   .controller('BudgetCtrl', function ($scope, $location, Db, Google, SeqNumber) {
 
@@ -48,29 +33,11 @@ angular.module('budgetApp')
     $scope.lines = [];
     $scope.periods = [];
 
-    var Period = function(period_start_date, lines) {
-        var seq_num = SeqNumber.new();
-        // the date is virtual and shall be recalculated if the type is reccurent or budget
-        lines = lines.filter(function(a) {
-          return isDateInPeriod(a.date, period_start_date);
-        });
-        console.log("Period lines:");
-        console.log(lines);
-        this.balance = function() {
-          var rv = 0;
-          lines.forEach(function(l) {
-            if(l.type=='I' || l.type=='i' || l.type=='IC') rv += l.amount;
-            else rv -= l.amount;
-          });
-          return rv;
-        };
-      };
-
     Db.onValues(function(values) {
       $scope.lines = $.map(values,function(v,k){return v;});
       $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
       $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
-      $scope.periods.push(new Period(new Date('11-01-2013'), $scope.lines));
+      $scope.periods.push(new Period(SeqNumber.new(), new Date('11-01-2013'), $scope.lines));
       console.log('balance: ' + $scope.periods[0].balance());
     });
 
