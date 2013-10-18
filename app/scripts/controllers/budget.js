@@ -13,9 +13,7 @@ TODO:
 - delete a item
 - deploy on github pages ! :)
 - form validation
-- timeline
 - correct datepicker
-- one time in/outcome with date (to be able to remember checks in the future)
 - unit tests !
 
 */
@@ -34,15 +32,21 @@ angular.module('budgetApp')
     $scope.periods = [];
 
     Db.onValues(function(values) {
-      $scope.lines = $.map(values,function(v,k){return v;});
+      $.map(values,function(v,k){return v;}).forEach(function(i){
+        $scope.lines.push(Db.newItem(i.label, i.amount, i.type, i.date));
+      });
+      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('11-01-2013'), $scope.lines));
       $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
       $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
-      $scope.periods.push(new Period(SeqNumber.new(), new Date('11-01-2013'), $scope.lines));
       console.log('balance: ' + $scope.periods[0].balance());
     });
 
     $scope.addItem = function(label, amount, type, date) {
       Db.addItem(label, amount, type, date);
   	};
+    $scope.deleteItem = function(id) {
+      console.log(id);
+      //Db.addItem(label, amount, type, date);
+    };
 
   });

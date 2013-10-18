@@ -12,16 +12,16 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
     },
 
     onValues : function(callbackSuccess) {
-      if (typeof ref == 'undefined') { console.log('no ref while getting values'); $location.path('/'); return;}
+      if (!ref) { console.log('no ref while getting values'); $location.path('/'); return;}
       ref.on('value', function(snapshot) {
         if(snapshot.val() !== null) {
-            if(firstConnection){
-                $rootScope.$apply(function(){
-                    callbackSuccess(snapshot.val());
-                });
-            } else {
-                callbackSuccess(snapshot.val());
-            }
+          if(firstConnection){
+            $rootScope.$apply(function(){
+              callbackSuccess(snapshot.val());
+            });
+          } else {
+            callbackSuccess(snapshot.val());
+          }
         }
         firstConnection = false;
       });
@@ -36,6 +36,64 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
 
     remove : function(id){
         ref.child(id).remove();
+    },
+
+    newItem : function (label, amount, type, date) {
+      obj = {};
+      obj.label   = label;
+      obj.amount  = amount;
+      obj.type    = type;
+      obj.date    = date;
+      obj.period_date = function () {
+        if(this.type=="O" || this.type=="OC" || this.type=="I" || this.type=="IC") {
+          if(new Date(this.date) > new Date()) {
+            return this.date;
+          } else {
+            return (new Date(this.date)).setMonth(new Date().getMonth());
+          }
+        }
+        return this.date;
+      };
+      return obj;
+    },
+
+/*        lines.forEach(function(l) {
+          if(l.type=='I' || l.type=='IC' || l.type=='O' || l.type=='OC') {
+            var d = new Date(l.date);
+            console.log(d);
+            console.log('to');
+            d.setMonth(sdate.getMonth()-1);
+            console.log(d);
+            l.date = d.getTime();
+          }
+        });
+*/
+
+    newPeriod : function(id, period_start_date, lines, initial_balance) {
+      obj = {};
+      obj.id = id;
+
+      function isDateInPeriod(date, period_start_date) {
+        return new Date(date).getTime() >= period_start_date.getTime();
+      }
+
+      // the date is virtual and shall be recalculated if the type is reccurent or budget
+      obj.lines = lines.filter(function(a) {
+        return isDateInPeriod(a.date, period_start_date);
+      });
+
+      console.log("Period lines:");
+      console.log(lines);
+
+      obj.balance = function() {
+        var rv = initial_balance || 0;
+        lines.forEach(function(l) {
+          if(l.type=='I' || l.type=='i' || l.type=='IC') rv += l.amount;
+          else rv -= l.amount;
+        });
+        return rv;
+      };
+      return obj;
     }
 
   };

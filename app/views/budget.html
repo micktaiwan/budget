@@ -10,14 +10,20 @@
       <tr style="vertical-align: top">
         <td>
           <table class="table table-striped">
-            <tr ng-repeat="item in lines | filter:{type:'I'} | orderBy:'date | itemDate'"><td>{{item | itemDate | date:'dd-MMM-yy'}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td class="amount income">{{item.amount}}</td></tr>
+            <tr ng-repeat="item in lines | filter:{type:'I'} | orderBy:'period_date()'">
+            <td>{{item.date | date:'dd-MMM-yy'}} => {{item.period_date() | date:'dd-MMM-yy'}}</td>
+            <td><ng-include src="'views/_label.html'"></ng-include></td>
+            <td class="amount income">{{item.amount}}</td></tr>
           </table>
         </td>
         <td>
           <table class="table table-striped">
-            <tr ng-repeat="item in lines | filter:{type:'O'} | orderBy:'date'"><td class="amount outcome">{{item.amount}}</td><td><ng-include src="'views/_label.html'"></ng-include></td><td>{{item | itemDate | date:'dd-MMM-yy'}}</td></tr>
+            <tr ng-repeat="item in lines | filter:{type:'O'} | orderBy:'date'">
+            <td class="amount outcome">{{item.amount}}</td>
+            <td><ng-include src="'views/_label.html'"></ng-include></td>
+            <td>{{item.date | date:'dd-MMM-yy'}} => {{item.period_date() | date:'dd-MMM-yy'}}</td></tr>
           </table>
-        </td>
+        </td>)
       </tr>
       <tr>
       <td>
@@ -38,7 +44,7 @@
     <table class="table table-striped">
       <thead><th>Date</th><th>Label</th><th>Amount</th></thead>
       <tr ng-repeat="item in lines | orderBy:'date'">
-        <td>{{item.date | date:'dd-MMM-yy'}} ({{item.date | dateDelta}})</td>
+        <td>{{item.date | date:'dd-MMM-yy'}} => {{item.period_date() | date:'dd-MMM-yy'}} ({{item.period_date() | dateDelta}})</td>
         <td><ng-include src="'views/_label.html'"></ng-include></td>
         <td class="{{item.type | typeClass}}">{{item.amount}}</td>
       </tr>
