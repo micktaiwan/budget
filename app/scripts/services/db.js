@@ -72,11 +72,14 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
     newPeriod : function(id, period_start_date, slines, initial_balance) {
       // TODO: the date is virtual and shall be recalculated if the type is reccurent or budget
       var _id = id;
-      var _lines = slines.filter(function(a) {
-        return isDateInPeriod(a.date, period_start_date);
+      var _lines = slines.filter(function(item) {
+        return isDateInPeriod(item, period_start_date);
       });
-      function isDateInPeriod(date, period_start_date) {
-        d =  new Date(date).getTime();
+      function isDateInPeriod(item, period_start_date) {
+        if(item.date < period_start_date.getTime() && (item.type=='I' || item.type=='IC' || item.type=='O' || item.type=='OC'))
+          return true;
+        else
+          d =  new Date(item.date).getTime();
         period_end_date = new Date(period_start_date).setMonth(period_start_date.getMonth()+1);
         return d >= period_start_date.getTime() && d < period_end_date;
       };
@@ -84,6 +87,7 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
         id: _id,
         lines: _lines,
         initial_balance: initial_balance,
+        name: period_start_date.getMonth()+1,
         balance: function() {
           var rv = initial_balance || 0;
           _lines.forEach(function(l) {

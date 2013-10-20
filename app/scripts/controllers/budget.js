@@ -46,8 +46,9 @@ angular.module('budgetApp')
       Db.addItem(label, amount, type, date);
   	};
 
-    $scope.deleteItem = function(id) {
-      var item = findItemById(id);
+    $scope.deleteItem = function(period, id) {
+      var item = findItemById(period, id);
+      if(!item) { console.log('no item'); return;}
       $scope.label  = item.label;
       $scope.amount = item.amount;
       var d         = new Date(item.date);
@@ -55,10 +56,12 @@ angular.module('budgetApp')
       Db.deleteItem(id);
     };
 
-    var findItemById = function(id) {
-      for(var i in $scope.lines) {
-        if($scope.lines[i].id == id) {
-          return $scope.lines[i];
+    var findItemById = function(period, id) {
+      console.log(id);
+      for(var i in period.lines) {
+        console.log(period.lines[i]);
+        if(period.lines[i].id == id) {
+          return period.lines[i];
         }
       }
       return null;
