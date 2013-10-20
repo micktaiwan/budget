@@ -10,7 +10,6 @@ TODO:
     store the result in a 'balance' item associated to the period and inject it to the next period
 - initialize current balance by asking the user how much he have now on his account
     or simply edit the balance item
-- delete a item
 - deploy on github pages ! :)
 - form validation
 - correct datepicker
@@ -32,21 +31,38 @@ angular.module('budgetApp')
     $scope.periods = [];
 
     Db.onValues(function(values) {
-      $.map(values,function(v,k){return v;}).forEach(function(i){
-        $scope.lines.push(Db.newItem(i.label, i.amount, i.type, i.date));
-      });
-      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('11-01-2013'), $scope.lines));
-      $scope.incomeTotal  = $scope.lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
-      $scope.outcomeTotal = $scope.lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0);
-      console.log('balance: ' + $scope.periods[0].balance());
+      var lines = [];
+      for(var i in values) {
+        lines.push(Db.newItem(i, values[i].label, values[i].amount, values[i].type, values[i].date));
+      };
+      $scope.periods = [];
+      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('10-01-2013'), lines, 0));
+      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('11-01-2013'), lines, $scope.periods[0].balance()));
+      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('12-01-2013'), lines, $scope.periods[1].balance()));
+      console.log('balance: ' + $scope.periods[$scope.periods.length-1].balance());
     });
 
     $scope.addItem = function(label, amount, type, date) {
       Db.addItem(label, amount, type, date);
   	};
+
     $scope.deleteItem = function(id) {
-      console.log(id);
-      //Db.addItem(label, amount, type, date);
+      var item = findItemById(id);
+      $scope.label  = item.label;
+      $scope.amount = item.amount;
+      var d         = new Date(item.date);
+      $scope.date   = (d.getMonth()+1) + "-" + d.getDate() + "-" + d.getFullYear();
+      Db.deleteItem(id);
     };
+
+    var findItemById = function(id) {
+      for(var i in $scope.lines) {
+        if($scope.lines[i].id == id) {
+          return $scope.lines[i];
+        }
+      }
+      return null;
+    };
+
 
   });

@@ -30,16 +30,16 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
     addItem : function(label, amount, type, date) {
       console.log('Db.addItem '+ label + ", " + amount + ", " + type + ", " + date);
       date = (new Date(date)).getTime();
-      console.log(date);
       ref.push({label: label, amount: parseInt(amount), type: type, date: date});
     },
 
-    remove : function(id){
+    deleteItem : function(id){
         ref.child(id).remove();
     },
 
-    newItem : function (label, amount, type, date) {
+    newItem : function (id, label, amount, type, date) {
       return {
+        id: id,
         label: label,
         amount : amount,
         type: type,
@@ -69,26 +69,31 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
         });
 */
 
-    newPeriod : function(id, period_start_date, lines, initial_balance) {
-      console.log("Period lines:");
-      console.log(lines);
+    newPeriod : function(id, period_start_date, slines, initial_balance) {
+      // TODO: the date is virtual and shall be recalculated if the type is reccurent or budget
+      var _id = id;
+      var _lines = slines.filter(function(a) {
+        return isDateInPeriod(a.date, period_start_date);
+      });
       function isDateInPeriod(date, period_start_date) {
-        return new Date(date).getTime() >= period_start_date.getTime();
-      }
+        d =  new Date(date).getTime();
+        period_end_date = new Date(period_start_date).setMonth(period_start_date.getMonth()+1);
+        return d >= period_start_date.getTime() && d < period_end_date;
+      };
       return {
-        id: id,
-        // the date is virtual and shall be recalculated if the type is reccurent or budget
-        lines: lines.filter(function(a) {
-          return isDateInPeriod(a.date, period_start_date);
-        }),
+        id: _id,
+        lines: _lines,
+        initial_balance: initial_balance,
         balance: function() {
           var rv = initial_balance || 0;
-          lines.forEach(function(l) {
+          _lines.forEach(function(l) {
             if(l.type=='I' || l.type=='i' || l.type=='IC') rv += l.amount;
             else rv -= l.amount;
           });
           return rv;
-        }
+        },
+        incomeTotal: function() {return _lines.filter(function(a){return a.type=='I' || a.type=='i' || a.type=='IC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0)},
+        outcomeTotal: function() {return _lines.filter(function(a){return a.type=='O' || a.type=='o' || a.type=='OC'}).reduce(function(a,b) {return a+parseInt(b.amount);}, 0)}
       };
     }
 
