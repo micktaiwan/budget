@@ -43,13 +43,14 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
         label: label,
         amount : amount,
         type: type,
-        date: date,
-        period_date: function () {
+        date: new Date(date),
+        period_date: function (period_start_date) {
+          if(!period_start_date) {period_start_date = new Date();}
           if(this.type=="O" || this.type=="OC" || this.type=="I" || this.type=="IC") {
-            if(new Date(this.date) > new Date()) {
+            if(new Date(this.date) > period_start_date) {
               return this.date;
             } else {
-              return (new Date(this.date)).setMonth(new Date().getMonth());
+              return (new Date(this.date)).setMonth(period_start_date.getMonth());
             }
           }
           return this.date;
@@ -57,20 +58,14 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
       }
     },
 
-/*        lines.forEach(function(l) {
-          if(l.type=='I' || l.type=='IC' || l.type=='O' || l.type=='OC') {
-            var d = new Date(l.date);
-            console.log(d);
-            console.log('to');
-            d.setMonth(sdate.getMonth()-1);
-            console.log(d);
-            l.date = d.getTime();
-          }
-        });
-*/
-
     newPeriod : function(id, period_start_date, slines, initial_balance) {
       // TODO: the date is virtual and shall be recalculated if the type is reccurent or budget
+      var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June",
+        "July", "August", "September",
+        "October", "November", "December"
+        ];
       var _id = id;
       var _lines = slines.filter(function(item) {
         return isDateInPeriod(item, period_start_date);
@@ -80,14 +75,15 @@ angular.module('budgetApp.services.db', []).factory('Db', function($rootScope, $
           return true;
         else
           d =  new Date(item.date).getTime();
-        period_end_date = new Date(period_start_date).setMonth(period_start_date.getMonth()+1);
+        period_end_date = (new Date(period_start_date)).setMonth(period_start_date.getMonth()+1);
         return d >= period_start_date.getTime() && d < period_end_date;
       };
       return {
         id: _id,
+        start_date: new Date(period_start_date),
         lines: _lines,
         initial_balance: initial_balance,
-        name: period_start_date.getMonth()+1,
+        name: monthNames[period_start_date.getMonth()],
         balance: function() {
           var rv = initial_balance || 0;
           _lines.forEach(function(l) {

@@ -36,10 +36,14 @@ angular.module('budgetApp')
         lines.push(Db.newItem(i, values[i].label, values[i].amount, values[i].type, values[i].date));
       };
       $scope.periods = [];
-      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('10-01-2013'), lines, 0));
-      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('11-01-2013'), lines, $scope.periods[0].balance()));
-      $scope.periods.push(Db.newPeriod(SeqNumber.new(), new Date('12-01-2013'), lines, $scope.periods[1].balance()));
-      console.log('balance: ' + $scope.periods[$scope.periods.length-1].balance());
+      var date = new Date('10-01-2013');
+      var balance = 0;
+      for(var i=0; i < 4; i++) {
+        $scope.periods.push(Db.newPeriod(SeqNumber.new(), date, lines, balance));
+        balance =  $scope.periods[$scope.periods.length-1].balance();
+        date.setMonth(date.getMonth()+1);
+        }
+      console.log('balance: ' + balance);
     });
 
     $scope.addItem = function(label, amount, type, date) {
@@ -57,9 +61,7 @@ angular.module('budgetApp')
     };
 
     var findItemById = function(period, id) {
-      console.log(id);
       for(var i in period.lines) {
-        console.log(period.lines[i]);
         if(period.lines[i].id == id) {
           return period.lines[i];
         }
